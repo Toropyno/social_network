@@ -1,0 +1,17 @@
+<div class="d-flex px-3">
+  <img src="{{ comment.author.get_avatar }}" class="wtf-avatar--xs col-auto" alt="">
+  <div class="col d-flex flex-column ms-2">
+    <span>
+      <a href="{{ comment.author.get_absolute_url }}"
+         class="wtf-link text-primary">{{ comment.author.get_full_name }}</a>
+    </span>
+    <span class="wtf-date">{{ comment.pub_date|date }}</span>
+    <span class="">{{ comment.text|linebreaksbr }}</span>
+    {% if not forloop.last %}
+      <hr class="my-1">
+    {% endif %}
+
+  </div>
+</div>
+
+

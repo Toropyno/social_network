@@ -1,0 +1,24 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+
+{% block main %}
+  <div class="row row-cols-1 shadow bg-white p-3">
+    <div class="col mb-2">
+      <span class="h5">Результаты поиска по запросу: {{ q }}</span>
+    </div>
+
+    {% if result %}
+      {% for user in result %}
+        <div class="col my-2">
+          <img src="{{ user.get_avatar }}" class="wtf-avatar--xs img-thumbnail" alt="avatar">
+          <a href="{{ user.get_absolute_url }}"><span>{{ user.get_full_name }}</span></a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col py-5 d-flex flex-column align-items-center">
+        <img src="{% static 'main_app/images/img_15.png' %}" alt="" class="w-25">
+        <span>Поиск не дал результатов</span>
+      </div>
+    {% endif %}
+  </div>
+{% endblock main %}

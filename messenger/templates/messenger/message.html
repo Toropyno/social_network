@@ -1,0 +1,14 @@
+<div class="row align-items-start mb-2">
+  <div class="col-auto p-1 me-1">
+    <img src="{{ message.author.get_avatar }}" alt="" class="wtf-avatar--xxs">
+  </div>
+  <div class="col px-0">
+    <span>
+      <a href="{{ message.author.get_absolute.url }}" class="wtf-link text-primary">{{ message.author.first_name }}</a>
+    </span>
+    <span class="wtf-date">{{ message.pub_date|time }}</span>
+    <div>
+      <small>{{ message.text|linebreaksbr }}</small>
+    </div>
+  </div>
+</div>

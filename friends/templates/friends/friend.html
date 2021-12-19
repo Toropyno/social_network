@@ -1,0 +1,40 @@
+<div class="col" data-wtf-object="friend" data-id="{{ friend.pk }}">
+  <div class="row">
+    <div class="col-auto">
+      <img src="{{ friend.get_avatar }}" class="wtf-avatar--xs" alt="">
+    </div>
+
+    <div class="col d-flex flex-column ps-2">
+      <span>
+        <a href="{{ friend.get_absolute_url }}" class="wtf-link text-primary">
+          {{ friend.get_full_name }}
+        </a>
+      </span>
+      <small>
+        <a class="wtf-link" data-wtf-object="chat" data-client-id="{{ friend.pk }}">
+          Написать сообщение
+        </a>
+      </small>
+    </div>
+
+    {% if is_my_page %}
+      <div class="col-auto">
+        <div class="dropdown">
+          <i class="bi bi-three-dots" role="button" id="dropdownMenuLink{{ friend.pk }}" data-bs-toggle="dropdown"
+             aria-expanded="false">
+          </i>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink{{ friend.pk }}">
+            <li>
+              <button class="dropdown-item" type="submit" data-wtf-action="unfriend">Удалить из друзей</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if not forloop.last %}
+    <hr class="">
+  {% endif %}
+</div>

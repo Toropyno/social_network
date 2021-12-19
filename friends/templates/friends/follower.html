@@ -1,0 +1,38 @@
+<div class="col" data-wtf-object="follower" data-id="{{ follower.pk }}">
+  <div class="row">
+    <div class="col-auto">
+      <img src="{{ follower.get_avatar }}" class="wtf-avatar--xs" alt="">
+    </div>
+
+    <div class="col d-flex flex-column ps-2">
+      <span>
+        <a href="{{ follower.get_absolute_url }}" class="wtf-link text-primary">
+          {{ follower.get_full_name }}
+        </a>
+      </span>
+      <small><a href="" class="wtf-link">Написать сообщение</a></small>
+    </div>
+
+    {% if is_my_page %}
+      <div class="col-auto">
+        <div class="dropdown">
+          <i class="bi bi-three-dots" role="button" id="dropdownMenuLink{{ follower.pk }}" data-bs-toggle="dropdown"
+             aria-expanded="false">
+          </i>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink{{ follower.pk }}">
+            <li>
+              <button class="dropdown-item" type="submit" data-wtf-action="accept request" data-id="{{ follower.pk }}">
+                Принять запрос
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if not forloop.last %}
+    <hr class="">
+  {% endif %}
+</div>

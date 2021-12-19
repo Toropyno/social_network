@@ -1,0 +1,69 @@
+{% load static %}
+{% if is_friend %}
+  <div class="btn-group my-2">
+    <button type="submit" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+      У вас в друзьях
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <button class="dropdown-item" type="submit" form="formUnfriend">Убрать из друзей</button>
+      </li>
+    </ul>
+  </div>
+
+  <form action="{% url 'api:user-unfriend' page_owner.pk %}" method="post" id="formUnfriend">
+    {% csrf_token %}
+  </form>
+
+{% else %}
+  {% if has_friend_request %}
+    {% if not is_subscriber %}
+      <div class="btn-group my-2">
+        <button type="submit" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
+          Запрос отправлен
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <button class="dropdown-item" type="submit" form="formUnsubscribe">Отменить запрос</button>
+          </li>
+        </ul>
+      </div>
+
+      <form action="{% url 'api:user-unsubscribe' page_owner.pk %}" id="formUnsubscribe" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user2" value="{{ page_owner.pk }}">
+      </form>
+    {% else %}
+
+      <div class="btn-group my-2">
+        <button type="submit" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
+          Предлагает дружбу
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <form action="{% url 'api:user-accept-request' page_owner.pk %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="status" value='True'>
+              <button class="dropdown-item" type="submit">Принять</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+
+    {% endif %}
+  {% else %}
+    <button type="submit" class="btn btn-primary btn-sm my-2" form="formSubscribe">Добавить в друзья</button>
+
+    <form action="{% url 'api:user-subscribe' page_owner.pk %}" method="post" class="" id="formSubscribe">
+      {% csrf_token %}
+      <input type="hidden" name="from_user" value="{{ user.pk }}">
+      <input type="hidden" name="to_user" value="{{ page_owner.pk }}">
+    </form>
+  {% endif %}
+{% endif %}
+
+<a href="{{ chat.get_absolute_url }}" class="btn btn-primary btn-sm" data-wtf-object="chat"
+   data-client-id="{{ page_owner.pk }}">Написать сообщение</a>

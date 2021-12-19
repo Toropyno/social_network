@@ -1,0 +1,96 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+
+{% block main %}
+  <div class="row shadow bg-white mb-2">
+    <div class="col">
+      <div class="row justify-content-between align-items-center p-3">
+        <div class="col-auto">
+          <span class="h5">
+            Фотоальбомы
+            {% if not is_my_page %}
+              пользователя {{ page_owner.get_full_name }}
+            {% endif %}
+          </span>
+        </div>
+        {% if is_my_page %}
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Создать альбом
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+  {% if albums %}
+    <div class="row g-2">
+      {% for album in albums %}
+        <a href="{{ album.get_absolute_url }}" class="col-4 wtf-link">
+          <div class="shadow bg-white d-flex flex-column align-items-center">
+            <img src="{% static 'main_app/images/img_14.png' %}" class="w-75" alt="">
+
+            <div class="row d-flex w-100">
+              <div class="col">
+                {% if album.is_private %}
+                  <i class="bi bi-lock-fill"></i>
+                {% endif %}
+                {{ album.title }}
+              </div>
+              <div class="col-auto">
+              {{ album.photo_set.count }}
+            </div>
+            </div>
+          </div>
+
+        </a>
+      {% endfor %}
+    </div>
+
+
+  {% else %}
+    <div class="row shadow bg-white">
+      <div class="col d-flex flex-column align-items-center m-3">
+        <img src="{% static 'main_app/images/img_14.png' %}" alt="" class="w-25">
+        <span class="my-2">Фотографии не добавлены</span>
+      </div>
+    </div>
+  {% endif %}
+
+
+  {% if is_my_page %}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Создание альбом</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'api:album-list' %}" method="post" id="formAlbum">
+              {% csrf_token %}
+              <input type="hidden" name="user" value="{{ user.pk }}">
+              <div class="col-auto mb-3">
+                <label for="album_title" class="form-label">Название</label>
+                <input type="text" id="album_title" name="title" class="form-control" required>
+              </div>
+              <div class="col-auto">
+                <label for="album_private" class="form-check-label">Сделать приватным</label>
+                <input type="checkbox" id="album_private" class="form-check-input" name="is_private">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="submit" form="formAlbum" class="btn btn-primary">Создать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock main %}

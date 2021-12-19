@@ -1,0 +1,15 @@
+{% extends 'main_app/base.html' %}
+
+{% block main %}
+  <div class="row flex-column">
+    <div class="col p-3 shadow bg-white mb-2">
+      <span class="h5">Новости</span>
+    </div>
+
+    {% if posts %}
+      {% for post in posts %}
+        {% include 'posts/post.html' %}
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock %}

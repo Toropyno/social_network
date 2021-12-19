@@ -1,0 +1,123 @@
+{% extends 'main_app/base.html' %}
+
+{% block main %}
+  <div class="row shadow bg-white align-items-center mb-2">
+    <div class="col p-3">
+      <span class="h3">Альбом: {{ album.title }}</span>
+    </div>
+
+    {% if is_my_page %}
+      <div class="col-auto">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                data-bs-target="#addPhotoModal">
+          Добавить фото
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                data-bs-target="#editAlbumModal">
+          Редактировать альбом
+        </button>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="row shadow bg-white p-3">
+    {% if album.is_private and not is_my_page %}
+      <div class="col py-5 my-5 d-flex justify-content-center">
+        <span class="h5">Доступ ограничен</span>
+      </div>
+    {% else %}
+      {% if photos %}
+        {% for photo in photos %}
+          <div class="col-3 mb-3">
+            <img src="{{ photo.photo.url }}" alt="photo" class="wtf-album--photo">
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col py-5 my-5 d-flex justify-content-center">
+          <span class="h5">Нет фотографий</span>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+
+
+  {% if is_my_page %}
+    <!-- Modal edit album -->
+    <div class="modal fade" id="editAlbumModal" tabindex="-1" aria-labelledby="editAlbumModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editAlbumModalLabel">Редактировать альбом</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'api:album-change' album.pk %}" id="editAlbumForm" method="post">
+              {% csrf_token %}
+              <div class="col-auto mb-3">
+                <label for="album_title" class="form-label">Название</label>
+                <input type="text" id="album_title" name="title" class="form-control" required
+                       value="{{ album.title }}">
+              </div>
+              <div class="col-auto">
+                <label for="album_private" class="form-check-label">Сделать приватным</label>
+                <input type="hidden" id="album_private_hidden" name="is_private" value="0">
+                <input type="checkbox" id="album_private" class="form-check-input" name="is_private"
+                       {% if album.is_private %}checked{% endif %}>
+
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <div>
+              <form action="{% url 'api:album-remove-album' album.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Удалить альбом</button>
+              </form>
+            </div>
+            <div>
+              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отмена</button>
+              <button type="submit" form="editAlbumForm" class="btn btn-primary btn-sm">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Modal edit album -->
+
+    <!-- Modal add photo -->
+    <div class="modal fade" id="addPhotoModal" tabindex="-1" aria-labelledby="addPhotoModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Добавить фото</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'api:album-add-photo' album.pk %}" method="post" id="formPhoto"
+                  enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" name="album" value="{{ album.pk }}">
+              <div class="mb-3">
+                <label for="formImage" class="form-label">Фотография</label>
+                <input class="form-control form-control-sm" id="formImage" type="file" accept="image/*"
+                       name="photo" required>
+              </div>
+              <div>
+                <label for="descTextarea" class="form-label">Описание</label>
+                <textarea class="form-control" id="descTextarea" rows="3" name="desc"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отмена</button>
+            <button type="submit" form="formPhoto" class="btn btn-primary btn-sm">Добавить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+
+{% endblock main %}

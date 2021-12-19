@@ -1,0 +1,52 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+
+{% block main %}
+  <div class="row shadow bg-white p-2 pb-3">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active btn-sm" id="pills-friends-tab" data-bs-toggle="pill"
+                data-bs-target="#pills-friends"
+                type="button" role="tab" aria-controls="pills-friends" aria-selected="true">Друзья
+        </button>
+      </li>
+
+      <li class="nav-item" role="presentation">
+        <button class="nav-link btn-sm" id="pills-followers-tab" data-bs-toggle="pill" data-bs-target="#pills-followers"
+                type="button" role="tab" aria-controls="pills-followers" aria-selected="false">Подписчики
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-friends" role="tabpanel" aria-labelledby="pills-friends-tab">
+        {% if friends %}
+          {% for friend in friends %}
+            {% include 'friends/friend.html' %}
+          {% endfor %}
+        {% else %}
+          <div class="col d-flex flex-column align-items-center py-5">
+            <img src="{% static 'main_app/images/img_11.png' %}" alt="" class="w-25">
+            <span class="mt-2">Список пуст</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="tab-pane fade" id="pills-followers" role="tabpanel" aria-labelledby="pills-followers-tab">
+        {% if followers %}
+          {% for follower in followers %}
+            {% include 'friends/follower.html' %}
+          {% endfor %}
+        {% else %}
+          <div class="col d-flex flex-column align-items-center py-5">
+            <img src="{% static 'main_app/images/img_12.png' %}" alt="" class="w-25">
+            <span class="mt-2">Список пуст</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

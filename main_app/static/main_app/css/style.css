@@ -1,0 +1,147 @@
+body {
+    min-height: 1000px;
+}
+
+.wtf-avatar {
+    width: 100%;
+    border: lightgray solid 1px;
+    padding: 4px;
+}
+
+.wtf-avatar--xxs {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: #bbbbbb solid 1px;
+    padding: 2px;
+}
+
+.wtf-avatar--xs {
+    height: 46px;
+    width: 46px;
+    border-radius: 50%;
+    border: #bbbbbb solid 1px;
+    padding: 2px;
+}
+
+.wtf-avatar--s {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.wtf-avatar--m {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.wtf-msg {
+
+}
+
+.wtf-msg:hover {
+    background-color: #f1f1f1;
+}
+
+.wtf-chat--item {
+
+}
+
+.wtf-chat--item:hover {
+    background-color: #f1f1f1;
+}
+
+.wtf-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.wtf-link:hover {
+    color: inherit;
+}
+
+.wtf-album-cover {
+    position: relative;
+    background-image: url("../images/img_14.png");
+    background-repeat: no-repeat;
+    background-size: 190px;
+    background-position: center;
+    background-color: #e5eaff;
+    /*width: 220px;*/
+    height: 170px;
+    overflow: hidden;
+}
+
+.wtf-album--photo {
+    max-width: 100%;
+    width: 300px;
+    height: 200px;
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #b4b4b4;
+    border-radius: .25rem;
+}
+
+.attachment {
+    display: none;
+}
+
+.wtf-upload {
+    cursor: pointer;
+}
+
+.wtf-upload--img {
+    width: 70px;
+    /*height: 50px;*/
+}
+
+.wtf-upload--img-x {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: lightgray;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0 2px;
+}
+
+.wtf-post--img {
+    width: 100%;
+    /*border: gray solid 1px;*/
+}
+
+.wtf-post--comment-icon {
+}
+
+.wtf-friends--item {
+
+}
+
+.wtf-friends--item:hover {
+    background-color: #f1f1f1;
+}
+
+.wtf-date {
+    font-size: 13px;
+    color: gray;
+}
+
+.wtf-post {
+
+}
+
+.wtf-post-footer--item {
+    padding: 3px 10px;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    /*cursor: pointer;*/
+}
+
+.wtf-message-container {
+    overflow: auto;
+    height: 300px;
+    max-height: 500px;
+}

@@ -1,0 +1,85 @@
+{% load static %}
+<div class="col shadow bg-white mb-2 p-3 px-4" data-wtf-object="post" data-id="{{ post.pk }}">
+
+  <div class="row">
+    <div class="col d-flex">
+      <img src="{{ post.author.get_avatar }}" class="wtf-avatar--xs" alt="">
+
+      <div class="d-flex flex-column ms-2">
+        <a href="{{ post.author.get_absolute_url }}" class="wtf-link text-primary">{{ post.author.get_full_name }}</a>
+        <span class="wtf-date">{{ post.pub_date|date }}</span>
+      </div>
+    </div>
+
+    {% if is_my_page %}
+      <div class="col-auto">
+        <div class="dropdown">
+          <i class="bi bi-three-dots" role="button" id="dropdownMenuLink{{ post.pk }}" data-bs-toggle="dropdown"
+             aria-expanded="false">
+          </i>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink{{ post.pk }}">
+            <li>
+              <button class="dropdown-item" type="submit" data-wtf-action="remove post">Удалить запись</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="row">
+    <div class="col d-flex flex-column px-2">
+      <span class="h6 py-3">{{ post.text }}</span>
+      {% if post.photo %}
+        <img src="{{ post.photo.url }}" class="wtf-post--img pb-3" alt="">
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row px-2">
+    <div class="col-auto wtf-post-footer--item me-1">
+      <i class="bi bi-chat-left-text " style="cursor: pointer"></i>
+      <span class="comments-counter">{{ post.get_comments.count }}</span>
+    </div>
+
+    <div class="col-auto wtf-post-footer--item">
+      <i class="bi bi-heart-fill likes-toggle" data-id="{{ post.pk }}" style="cursor: pointer"></i>
+      <span class="likes-counter">{{ post.total_likes }}</span>
+    </div>
+  </div>
+
+  <hr class="">
+
+  <div class="row mb-2">
+    {% for comment in post.get_comments %}
+      {% include 'posts/comment.html' %}
+    {% endfor %}
+  </div>
+
+  <div class="row">
+    <form action="{% url 'api:post-comment' post.pk %}" class="col" method="post"
+          enctype="multipart/form-data">
+      <div class="row">
+        {% csrf_token %}
+        <input type="hidden" name="post" value="{{ post.pk }}">
+        <input type="hidden" name="author" value="{{ user.pk }}">
+        <div class="col d-flex">
+          <textarea name="text" id="" class="form-control me-2" rows="1" required
+                    placeholder="Оставить комментарий"></textarea>
+          <input type="file" id="file-upload_{{ post.pk }}" name="photo" class="attachment"
+                 accept="image/*">
+          <label for="file-upload_{{ post.pk }}" class="wtf-upload me-2">
+            <i class="bi bi-file-earmark-image fs-4 text-secondary"></i>
+          </label>
+          <button type="submit" class="btn btn-primary btn-sm">
+            Отправить
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-auto upload-container" style="position:relative;"></div>
+      </div>
+    </form>
+  </div>
+
+</div>

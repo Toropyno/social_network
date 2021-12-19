@@ -1,0 +1,89 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block main %}
+
+  <div class="row align-items-start">
+    <div class="col-3 shadow bg-white me-2 p-2" style="position:sticky; top: 16px">
+      <img src="{{ page_owner.get_avatar }}" class="wtf-avatar mb-2" alt="avatar">
+      {% if is_my_page %}
+        {% include 'main_app/user_page__my.html' %}
+      {% else %}
+        {% include 'main_app/user_page__outside.html' %}
+      {% endif %}
+    </div>
+
+
+    <div class="col">
+      <div class="row shadow bg-white px-3 mb-2">
+        <div class="col py-2">
+          <span class="h5 py-3">{{ page_owner.get_full_name }}</span>
+        </div>
+        <hr>
+        <div class="col py-5">
+          <small>День рождения: {{ page_owner.birthday }}</small>
+        </div>
+        <hr>
+        <div class="col d-flex justify-content-around ">
+          <a href="{% url 'friend-list' page_owner.pk %}" class="wtf-link d-flex flex-column align-items-center">
+            <span class="h5">{{ page_owner.friend_list.count }}</span>
+            <span>Друзья</span>
+          </a>
+          <a href="{% url 'photo_album-list' page_owner.pk %}"
+             class="wtf-link d-flex flex-column align-items-center">
+            <span class="h5">{{ photos_count }}</span>
+            <p>Фото</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="row shadow bg-white mb-2">
+        <div class="col">
+          <div class="row flex-column">
+            <span class="h5 py-2 m-0">Записи</span>
+            {% if is_my_page %}
+              <form action="{% url 'api:post-list' %}" method="post" class="py-2" enctype="multipart/form-data">
+                <div class="row">
+                  {% csrf_token %}
+                  <input type="hidden" name="author" value="{{ page_owner.pk }}">
+                  <div class="col d-flex">
+                  <textarea class="form-control me-2 form-control-sm" id="post_form" name="text" rows="1"
+                            placeholder="Что у вас нового?"
+                            aria-label="textarea" required></textarea>
+
+                    <input type="file" id="file-upload" name="photo" class="attachment" accept="image/*">
+                    <label for="file-upload" class="wtf-upload me-2">
+                      <i class="bi bi-file-earmark-image fs-4 text-secondary"></i>
+                    </label>
+
+                    <button type="submit" class="btn btn-sm btn-primary">Опубликовать</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-auto upload-container" style="position:relative;"></div>
+                </div>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row flex-column">
+        {% if posts %}
+          {% for post in posts %}
+            {% include 'posts/post.html' %}
+          {% endfor %}
+        {% else %}
+          <div class="col d-flex flex-column align-items-center py-5 shadow bg-white">
+            <img src="{% static 'main_app/images/img_7.png' %}" alt="post" class="w-25">
+            <span>
+              Нет записей
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'main_app/js/script.js' %}"></script>
+{% endblock %}
